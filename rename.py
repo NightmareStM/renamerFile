@@ -7,6 +7,7 @@ from os import walk
 import time
 import os
 import sys
+import mimetypes
 
 # DESCRIZIONE COMANDO
 # rename.py [path] [argv]
@@ -27,11 +28,18 @@ def help():
         "\n"
         )
 
-def filmMode(name):
-    if int(film) == 1: #se modalita' film attiva converte tutti i '.' in ' '
-        return name.replace(".", " ")
-    else:
-        return name
+def filmMode(name, path):
+    if int(film) == 1: #se modalita' film attiva converte tutti i '.' & '_' in ' '
+        name = name.replace(".", " ").replace('_', ' ')
+        drs = os.path.join(path, name)
+        print(drs)
+        
+        if not os.path.isdir(drs):
+            os.mkdir(drs)
+        else:
+            os.rename(drs, drs)
+
+    return name
 
 def getFiles(path):
     return next(walk(path), (None, None, []))[2] #acquisizione dei file nella cartella
@@ -40,12 +48,15 @@ def rename(name, path):
     newName = os.path.splitext(name.title())[0] #acquisizione file senza estansione
     ext = os.path.splitext(name)[-1].lower() #acquisizione estensione
 
-    newName = filmMode(newName)
+    if len(ext) == 0:
+        return name
 
+    newName = filmMode(newName, path)
+    
     i = 0
     while(int(i) != -1):
         try:
-            os.rename((path + '\\' + name), (path + '\\' + newName + (' (' + str(i) + ')' if i > 0 else '') + ext))
+            os.rename(os.path.join(path, name), (path + '\\' + (newName + '\\' + newName if film == 1 else newName) + (' (' + str(i) + ')' if i > 0 else '') + ext))
             i = -1
         except:
             i += 1
@@ -54,7 +65,7 @@ def rename(name, path):
         "(OLD NAME)\n\t" +
         name + "\n" +
         "(NEW NAME)\n\t" +
-        newName + (' (' + str(i) + ')' if (i > 0) else '') + ext + '\n'
+        (str(newName) + '\\' if film == 1 else '') + str(newName) + (' (' + str(i) + ')' if (i > 0) else '') + ext + '\n'
         )
 
 ### ACQUISIZIONE DEGLI ARGOMENTI ###
@@ -113,4 +124,4 @@ else: #se non e' stato trovato alcun file
 #subdirs = [x[0] for x in os.walk(path)]
 #print(subdirs)
 
-time.sleep(500)
+#time.sleep(500)
