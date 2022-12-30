@@ -101,6 +101,9 @@ def warning(wrn):
 def ok(okk):
     print(GREEN_BOLD_BRIGHT + "[ OK ]" + RESET + " " + okk)
 
+def selected(sld):
+    print(BLUE_BOLD_BRIGHT + "SELECTED :" + RESET + " "+ WHITE_UNDERLINED + sld + RESET)
+
 def help():
     print(
         "\n\nrename.py [path] [argv]\n\n" +
@@ -198,18 +201,18 @@ if path != None:
 
     ### OPERAZIONE DI RINOMINA DEL FILE ###
     if os.path.isfile(path):
-        ok("file singolo\n")
+        selected("file singolo\n")
         print(os.path.basename(path), '\\'.join(path.split('\\')[0:-1]))
         rename(os.path.basename(path), '\\'.join(path.split('\\')[0:-1]))
     elif subdir == 1:
-        ok("cartella e sotto cartelle")
+        selected("cartella e sotto cartelle\n")
         for path in [x[0] for x in os.walk(path)]:
             print(path)
             filenames = getFiles(path)
             for name in filenames:
                 rename(name, path)
     elif len(filenames) > 0: #controllo esistenza file
-        print("cartella con file\n")
+        selected("cartella con file\n")
         for name in filenames: #passaggio dei file
             rename(name, path)
     else: #se non e' stato trovato alcun file
