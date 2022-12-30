@@ -11,8 +11,10 @@ import mimetypes
 
 # DESCRIZIONE COMANDO
 # rename.py [path] [argv]
-# -film Sostituisce tutti i '.' con ' '
-# -subdir aplica la rinomina anche alle sottocartelle
+# -f (--film) Sostituisce tutti i '.' & '_' con ' '
+# -s (--subdir) aplica la rinomina anche alle sottocartelle
+# -m (--mkdir) dopo rinomina crea cartella con nome del file e inserisce dentro il file
+# -h (--help) stampa messaggio help
 
 ### DEFINIZIONE ARGOMENTI ###
 
